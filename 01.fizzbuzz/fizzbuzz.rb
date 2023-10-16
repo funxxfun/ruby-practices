@@ -1,11 +1,11 @@
 (1..20).each do |number|
   def fizzbuzz(number)
     if number % 15  == 0
-      puts "FizzBuzz"
+      puts 'FizzBuzz'
     elsif number % 3 == 0
-      puts "Fizz"
+      puts 'Fizz'
     elsif number % 5 == 0
-      puts "Buzz"
+      puts 'Buzz'
     else
       puts number
     end
