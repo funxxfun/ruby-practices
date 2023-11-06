@@ -4,19 +4,8 @@ require 'date'
 require 'optparse'
 
 params = ARGV.getopts('y:', 'm:')
-
-if params['y']
-  year = params['y'].to_i
-else
-  year = Date.today.year
-end
-
-if params['m']
-  month = params['m'].to_i
-else
-  month = Date.today.month
-end
-
+year = params['y'] ? params['y'].to_i : Date.today.year
+month = params['m'] ? params['m'].to_i : Date.today.month
 
 day = Date.new(year, month)
 
