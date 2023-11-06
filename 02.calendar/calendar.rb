@@ -16,12 +16,8 @@ last_day = Date.new(day.year, day.month, -1)
 print "   " * first_day.wday
 (first_day..last_day).each do |date|
   # 横並びに表示したいためputsではなくprintで出力する
-  if date.day <= 9
-    print " " + "#{date.day}" + " "
-  else
-    print "#{date.day}" + " "
-  end
-
+  print "#{date.day}".rjust(2) + " "
+  
   if date.saturday?
     puts
   end
