@@ -23,6 +23,6 @@ print "   " * first_day.wday
   end
 
   if date.saturday?
-    print "\n"
+    puts
   end
 end
