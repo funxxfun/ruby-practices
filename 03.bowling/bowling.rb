@@ -22,7 +22,9 @@ end
 
 point = 0
 frames.each_with_index do |frame, index|
-  point += if frame[0] == 10 # ストライクの時
+  point += if frame[0] == 10 && frames[index + 1][0] == 10 # ストライクが続いた時
+             frame.sum + frames[index + 1][0] + frames[index + 2][0] + frames[index + 2][1]
+           elsif frame[0] == 10 # ストライクの時
              frame.sum + frames[index + 1][0] + frames[index + 1][1]
            elsif frame.sum == 10 # スペアの時
              frame.sum + frames[index + 1][0]
