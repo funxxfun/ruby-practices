@@ -24,7 +24,7 @@ point = 0
 frames.each_with_index do |frame, index|
   if index <= 8 # 1~9フレーム
     point += if frame[0] == 10 && frames[index + 1][0] == 10 # 連続ストライクの時
-               frame.sum + frames[index + 1][0] + frames[index + 2][0] + frames[index + 2][1]
+               frame.sum + frames[index + 1][0] + frames[index + 2][0]
              elsif frame[0] == 10 # 連続しないストライクの時
                frame.sum + frames[index + 1][0] + frames[index + 1][1]
              elsif frame.sum == 10 # スペアの時
