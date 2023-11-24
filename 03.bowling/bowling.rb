@@ -1,8 +1,6 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
-require 'debug'
-
 score = ARGV[0]
 scores = score.split(',')
 shots = []
@@ -36,7 +34,7 @@ frames.each_with_index do |frame, index|
 
   point += frame.sum if index >= 9 # 10フレーム
 end
-p frames
+
 p point
 
 puts
