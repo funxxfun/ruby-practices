@@ -35,6 +35,4 @@ frames.each_with_index do |frame, index|
   point += frame.sum if index >= 9
 end
 
-p point
-
-puts
+puts point
