@@ -16,21 +16,18 @@ end
 frames = shots.each_slice(2).to_a
 point = 0
 frames.each_with_index do |frame, index|
+  point += frame.sum
+
   if index <= 8
     next_frame = frames[index + 1]
     next_after_next_frame = frames[index + 2]
     if frame[0] == 10 && next_frame[0] == 10
-      point += frame.sum + next_frame[0] + next_after_next_frame[0]
+      point += next_frame[0] + next_after_next_frame[0]
     elsif frame[0] == 10
-      point += frame.sum + next_frame[0] + next_frame[1]
+      point += next_frame[0] + next_frame[1]
     elsif frame.sum == 10
-      point += frame.sum + next_frame[0]
-    else
-      point += frame.sum
+      point += next_frame[0]
     end
-
-  else
-    point += frame.sum
   end
 end
 
