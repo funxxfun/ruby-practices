@@ -3,18 +3,16 @@
 
 COLUMNS_COUNT = 3
 
-def file_directory(path = ".")
-  entries = Dir.entries(path).reject { |entry| entry.start_with?(".") }.sort
+def file_directory(path = '.')
+  Dir.entries(path).reject { |entry| entry.start_with?('.') }.sort
 end
 
 def display_columns(entries)
-  max_length = entries.map{ |entry| entry.length }.max
+  max_length = entries.map(&:length).max
   max_length += 5
-  format_entries = entries.map{ |entry| entry.ljust(max_length) }
+  format_entries = entries.map { |entry| entry.ljust(max_length) }
 
-  while format_entries.length % COLUMNS_COUNT != 0
-    format_entries << nil
-  end
+  format_entries << nil while format_entries.length % COLUMNS_COUNT != 0
 
   rows = format_entries.each_slice(format_entries.length / COLUMNS_COUNT).to_a
   rows.transpose.each do |row|
