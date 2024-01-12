@@ -3,7 +3,7 @@
 
 COLUMNS_COUNT = 3
 
-def file_name(path = '.')
+def file_names(path = '.')
   Dir.entries(path).reject { |entry| entry.start_with?('.') }.sort
 end
 
@@ -20,4 +20,4 @@ def display_columns(entries)
   end
 end
 
-display_columns(file_name)
+display_columns(file_names)
