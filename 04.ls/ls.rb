@@ -1,10 +1,21 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
+require 'optparse'
+
 COLUMNS_COUNT = 3
 
 def file_names(path = '.')
-  Dir.entries(path).reject { |entry| entry.start_with?('.') }.sort
+  opt = OptionParser.new
+  params = {}
+  opt.on('-a') { |v| params[:a] = v }
+  opt.parse!(ARGV)
+
+  if params[:a]
+    Dir.entries(path).sort
+  else
+    Dir.entries(path).reject { |entry| entry.start_with?('.') }.sort
+  end
 end
 
 def display_columns(entries)
