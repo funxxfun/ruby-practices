@@ -11,11 +11,9 @@ def file_names(path = '.')
   opt.on('-a') { |v| params[:a] = v }
   opt.parse!(ARGV)
 
-  if params[:a]
-    Dir.entries(path).sort
-  else
-    Dir.entries(path).reject { |entry| entry.start_with?('.') }.sort
-  end
+  file_names = Dir.entries(path)
+  file_names = file_names.reject { |entry| entry.start_with?('.') } unless params[:a]
+  file_names.sort
 end
 
 def display_columns(entries)
