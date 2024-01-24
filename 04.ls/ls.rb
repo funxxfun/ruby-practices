@@ -8,12 +8,12 @@ COLUMNS_COUNT = 3
 def file_names(path = '.')
   opt = OptionParser.new
   params = {}
-  opt.on('-a') { |v| params[:a] = v }
+  opt.on('-r') { |v| params[:r] = v }
   opt.parse!(ARGV)
 
-  file_names = Dir.entries(path)
-  file_names = file_names.reject { |entry| entry.start_with?('.') } unless params[:a]
-  file_names.sort
+  file_names = Dir.entries(path).reject { |file_name| file_name.start_with?('.') }.sort
+  file_names = file_names.reverse if params[:r]
+  file_names
 end
 
 def display_columns(entries)
