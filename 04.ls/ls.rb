@@ -2,6 +2,7 @@
 # frozen_string_literal: true
 
 require 'optparse'
+require 'etc'
 
 COLUMNS_COUNT = 3
 
@@ -55,8 +56,8 @@ def display_long_format(entries)
     file_type = transformation_file_type(entry)
     file_permissions = file.mode
     file_nlink = file.nlink
-    file_owner = file.uid
-    file_group = file.gid
+    file_owner = Etc.getpwuid(file.uid).name
+    file_group = Etc.getgrgid(file.gid).name
     file_size = file.size
     time_stamp = file.mtime
     puts "#{file_type}#{file_permissions} #{file_nlink} #{file_owner} #{file_group} #{file_size} #{time_stamp} #{entry}"
