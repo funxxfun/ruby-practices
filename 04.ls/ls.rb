@@ -5,15 +5,15 @@ require 'optparse'
 
 COLUMNS_COUNT = 3
 
-def file_names(path = '.')
+def files(path = '.', options)
   opt = OptionParser.new
-  params = {}
-  opt.on('-r') { |v| params[:r] = v }
+  opt.on('-r') { |v| options[:r] = v }
+  opt.on('-l') { |v| options[:l] = v }
   opt.parse!(ARGV)
 
-  file_names = Dir.entries(path).reject { |file_name| file_name.start_with?('.') }.sort
-  file_names = file_names.reverse if params[:r]
-  file_names
+  files = Dir.entries(path).reject { |file| file.start_with?('.') }.sort
+  files = files.reverse if options[:r]
+  files
 end
 
 def display_columns(entries)
@@ -29,4 +29,15 @@ def display_columns(entries)
   end
 end
 
-display_columns(file_names)
+def display_long(entries)
+
+end
+
+options = {}
+entries = files('.', options)
+
+if options[:l]
+  display_long(entries)
+else
+  display_columns(entries)
+end
