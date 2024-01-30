@@ -29,15 +29,25 @@ def display_columns(entries)
   end
 end
 
-def display_long(entries)
-
+def display_long_format(entries)
+  entries.each do |entry|
+    file = File.stat(entry)
+    file_type = file.ftype
+    file_permissions = file.mode
+    file_nlink = file.nlink
+    file_owner = file.uid
+    file_group = file.gid
+    file_size = file.size
+    time_stamp = file.mtime
+    puts "#{file_type}#{file_permissions} #{file_nlink} #{file_owner} #{file_group} #{file_size} #{time_stamp} #{entry}"
+  end
 end
 
 options = {}
 entries = files('.', options)
 
 if options[:l]
-  display_long(entries)
+  display_long_format(entries)
 else
   display_columns(entries)
 end
