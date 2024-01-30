@@ -32,22 +32,16 @@ end
 
 def transformation_file_type(file)
   file_type = File.stat(file).ftype
-  case file_type
-  when 'file'
-    '-'
-  when 'directory'
-    'd'
-  when 'characterSpecial'
-    'c'
-  when 'blockSpecial'
-    'b'
-  when 'fifo'
-    'p'
-  when 'link'
-    'l'
-  when 'socket'
-    's'
-  end
+  file_types = {
+    'file' => '-',
+    'directory' => 'd',
+    'characterSpecial' => 'c',
+    'blockSpecial' => 'b',
+    'fifo' => 'p',
+    'link' => 'l',
+    'socket' => 's'
+  }
+  file_types[file_type]
 end
 
 def display_long_format(entries)
@@ -59,7 +53,7 @@ def display_long_format(entries)
     file_owner = Etc.getpwuid(file.uid).name
     file_group = Etc.getgrgid(file.gid).name
     file_size = file.size
-    time_stamp = file.mtime.strftime("%-m %e %H:%M")
+    time_stamp = file.mtime.strftime('%-m %e %H:%M')
     puts "#{file_type}#{file_permissions} #{file_nlink} #{file_owner} #{file_group} #{file_size} #{time_stamp} #{entry}"
   end
 end
