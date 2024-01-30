@@ -59,7 +59,7 @@ def display_long_format(entries)
     file_owner = Etc.getpwuid(file.uid).name
     file_group = Etc.getgrgid(file.gid).name
     file_size = file.size
-    time_stamp = file.mtime
+    time_stamp = file.mtime.strftime("%-m %e %H:%M")
     puts "#{file_type}#{file_permissions} #{file_nlink} #{file_owner} #{file_group} #{file_size} #{time_stamp} #{entry}"
   end
 end
