@@ -29,10 +29,30 @@ def display_columns(entries)
   end
 end
 
+def transformation_file_type(file)
+  file_type = File.stat(file).ftype
+  case file_type
+  when 'file'
+    '-'
+  when 'directory'
+    'd'
+  when 'characterSpecial'
+    'c'
+  when 'blockSpecial'
+    'b'
+  when 'fifo'
+    'p'
+  when 'link'
+    'l'
+  when 'socket'
+    's'
+  end
+end
+
 def display_long_format(entries)
   entries.each do |entry|
     file = File.stat(entry)
-    file_type = file.ftype
+    file_type = transformation_file_type(entry)
     file_permissions = file.mode
     file_nlink = file.nlink
     file_owner = file.uid
