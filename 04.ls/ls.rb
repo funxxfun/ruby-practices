@@ -6,7 +6,7 @@ require 'etc'
 
 COLUMNS_COUNT = 3
 
-def files(path = '.', options)
+def files(options, path = '.')
   opt = OptionParser.new
   opt.on('-r') { |v| options[:r] = v }
   opt.on('-l') { |v| options[:l] = v }
@@ -30,7 +30,7 @@ def display_columns(entries)
   end
 end
 
-def transformation_file_type(file)
+def format_file_type(file)
   file_type = File.stat(file).ftype
   file_types = {
     'file' => '-',
@@ -44,27 +44,18 @@ def transformation_file_type(file)
   file_types[file_type]
 end
 
-def transformation_file_permissions(file)
-  file_permissions = file.mode.to_s(8).slice(-3, 3)
-  file_permissions = file_permissions.chars.map(&:to_i)
+def format_permissions(file)
+  file_permissions = file.mode.to_s(8).slice(-3, 3).chars.map(&:to_i)
   file_permissions = file_permissions.map do |permission|
     case permission
-    when 0
-      '---'
-    when 1
-      '--x'
-    when 2
-      '-w-'
-    when 3
-      '-wx'
-    when 4
-      'r--'
-    when 5
-      'r-x'
-    when 6
-      'rw-'
-    when 7
-      'rwx'
+    when 0 then '---'
+    when 1 then '--x'
+    when 2 then '-w-'
+    when 3 then '-wx'
+    when 4 then 'r--'
+    when 5 then 'r-x'
+    when 6 then 'rw-'
+    when 7 then 'rwx'
     end
   end
   file_permissions.join
@@ -73,8 +64,8 @@ end
 def display_long_format(entries)
   entries.each do |entry|
     file = File.stat(entry)
-    file_type = transformation_file_type(entry)
-    file_permissions = transformation_file_permissions(file)
+    file_type = format_file_type(entry)
+    file_permissions = format_permissions(file)
     file_nlink = file.nlink
     file_owner = Etc.getpwuid(file.uid).name
     file_group = Etc.getgrgid(file.gid).name
@@ -85,7 +76,7 @@ def display_long_format(entries)
 end
 
 options = {}
-entries = files('.', options)
+entries = files(options, '.')
 
 if options[:l]
   display_long_format(entries)
