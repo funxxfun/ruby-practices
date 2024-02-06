@@ -66,12 +66,12 @@ def display_long_format(entries)
     file = File.stat(entry)
     file_type = format_file_type(entry)
     file_permissions = format_permissions(file)
-    file_nlink = file.nlink
+    file_nlink = file.nlink.to_s
     file_owner = Etc.getpwuid(file.uid).name
     file_group = Etc.getgrgid(file.gid).name
-    file_size = file.size
+    file_size = file.size.to_s
     time_stamp = file.mtime.strftime('%-m %e %H:%M')
-    puts "#{file_type}#{file_permissions} #{file_nlink} #{file_owner} #{file_group} #{file_size} #{time_stamp} #{entry}"
+    puts "#{file_type}#{file_permissions} #{file_nlink.rjust(2)} #{file_owner.rjust(6)} #{file_group.rjust(6)} #{file_size.rjust(5)} #{time_stamp.rjust(11)} #{entry}"
   end
 end
 
