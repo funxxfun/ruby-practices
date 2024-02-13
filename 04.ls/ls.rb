@@ -76,7 +76,9 @@ def display_long_format(entries)
     file_group = Etc.getgrgid(file.gid).name
     file_size = file.size.to_s
     time_stamp = file.mtime.strftime('%-m %e %H:%M')
-    puts "#{file_type}#{file_permissions} #{file_nlink.rjust(2)} #{file_owner.rjust(6)} #{file_group.rjust(6)} #{file_size.rjust(5)} #{time_stamp.rjust(11)} #{entry}"
+    puts "#{file_type}#{file_permissions} " \
+         "#{file_nlink.rjust(2)} #{file_owner.rjust(6)} #{file_group.rjust(6)} " \
+         "#{file_size.rjust(5)} #{time_stamp.rjust(11)} #{entry}"
   end
 end
 
