@@ -6,6 +6,29 @@ require 'etc'
 
 COLUMNS_COUNT = 3
 
+FILE_TYPE =
+  {
+    'file' => '-',
+    'directory' => 'd',
+    'characterSpecial' => 'c',
+    'blockSpecial' => 'b',
+    'fifo' => 'p',
+    'link' => 'l',
+    'socket' => 's'
+  }.freeze
+
+FILE_PERMISSION =
+  {
+    0 => '---',
+    1 => '--x',
+    2 => '-w-',
+    3 => '-wx',
+    4 => 'r--',
+    5 => 'r-x',
+    6 => 'rw-',
+    7 => 'rwx'
+  }.freeze
+
 def files(options, path = '.')
   opt = OptionParser.new
   opt.on('-r') { |v| options[:r] = v }
@@ -32,31 +55,13 @@ end
 
 def format_file_type(file)
   file_type = File.stat(file).ftype
-  file_types = {
-    'file' => '-',
-    'directory' => 'd',
-    'characterSpecial' => 'c',
-    'blockSpecial' => 'b',
-    'fifo' => 'p',
-    'link' => 'l',
-    'socket' => 's'
-  }
-  file_types[file_type]
+  FILE_TYPE[file_type]
 end
 
 def format_permissions(file)
   file_permissions = file.mode.to_s(8).slice(-3, 3).chars.map(&:to_i)
   file_permissions = file_permissions.map do |permission|
-    case permission
-    when 0 then '---'
-    when 1 then '--x'
-    when 2 then '-w-'
-    when 3 then '-wx'
-    when 4 then 'r--'
-    when 5 then 'r-x'
-    when 6 then 'rw-'
-    when 7 then 'rwx'
-    end
+    FILE_PERMISSION[permission]
   end
   file_permissions.join
 end
