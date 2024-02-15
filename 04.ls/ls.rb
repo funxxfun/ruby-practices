@@ -67,6 +67,12 @@ def format_permissions(file)
 end
 
 def display_long_format(entries)
+  block_sizes = entries.map do |entry|
+    file_stat = File.stat(entry)
+    file_stat.blocks
+  end
+  total_blocks = block_sizes.sum
+  puts "total #{total_blocks}"
   entries.each do |entry|
     file = File.stat(entry)
     file_type = format_file_type(entry)
@@ -77,8 +83,8 @@ def display_long_format(entries)
     file_size = file.size.to_s
     time_stamp = file.mtime.strftime('%-m %e %H:%M')
     puts "#{file_type}#{file_permissions} " \
-         "#{file_nlink.rjust(2)} #{file_owner.rjust(6)} #{file_group.rjust(6)} " \
-         "#{file_size.rjust(5)} #{time_stamp.rjust(11)} #{entry}"
+    "#{file_nlink.rjust(2)} #{file_owner.rjust(6)} #{file_group.rjust(6)} " \
+    "#{file_size.rjust(5)} #{time_stamp.rjust(11)} #{entry}"
   end
 end
 
