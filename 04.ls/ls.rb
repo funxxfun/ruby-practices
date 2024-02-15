@@ -31,11 +31,17 @@ FILE_PERMISSION =
 
 def files(options, path = '.')
   opt = OptionParser.new
+  opt.on('-a') { |v| options[:a] = v }
   opt.on('-r') { |v| options[:r] = v }
   opt.on('-l') { |v| options[:l] = v }
   opt.parse!(ARGV)
 
-  files = Dir.entries(path).reject { |file| file.start_with?('.') }.sort
+  files = Dir.entries(path)
+  files = if options[:a]
+            files.sort
+          else
+            files.reject { |entry| entry.start_with?('.') }.sort
+          end
   files = files.reverse if options[:r]
   files
 end
@@ -83,8 +89,8 @@ def display_long_format(entries)
     file_size = file.size.to_s
     time_stamp = file.mtime.strftime('%-m %e %H:%M')
     puts "#{file_type}#{file_permissions} " \
-    "#{file_nlink.rjust(2)} #{file_owner.rjust(6)} #{file_group.rjust(6)} " \
-    "#{file_size.rjust(5)} #{time_stamp.rjust(11)} #{entry}"
+         "#{file_nlink.rjust(2)} #{file_owner.rjust(6)} #{file_group.rjust(6)} " \
+         "#{file_size.rjust(5)} #{time_stamp.rjust(11)} #{entry}"
   end
 end
 
