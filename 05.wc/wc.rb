@@ -6,6 +6,7 @@ options = {}
 OptionParser.new do |opts|
   opts.on("-l") { |v| options[:l] = v }
   opts.on("-w") { |v| options[:w] = v }
+  opts.on("-c") { |v| options[:c] = v }
 end.parse!
 
 def print_wc(file_name, options)
@@ -14,12 +15,18 @@ def print_wc(file_name, options)
   word_count = content.split(/\s+/).size
   char_count = content.bytesize
 
-  if options[:l] && !options[:w]
+  if options[:l] && !options[:w] && !options[:c]
     puts "#{line_count.to_s.rjust(8)} #{file_name}"
-  elsif options[:w] && !options[:l]
-    puts "#{word_count.to_s.rjust(8)} #{file_name}"
-  elsif options[:l] && options[:w]
+  elsif options[:l] && options[:w] && !options[:c]
     puts "#{line_count.to_s.rjust(8)} #{word_count.to_s.rjust(8)} #{file_name}"
+  elsif options[:l] && !options[:w] && options[:c]
+    puts "#{line_count.to_s.rjust(8)} #{char_count.to_s.rjust(8)} #{file_name}"
+  elsif !options[:w] && options[:l] && !options[:c]
+    puts "#{line_count.to_s.rjust(8)} #{file_name}"
+  elsif !options[:l] && options[:w] && options[:c]
+    puts "#{word_count.to_s.rjust(8)} #{char_count.to_s.rjust(8)} #{file_name}"
+  elsif !options[:l] && !options[:w] && options[:c]
+    puts "#{char_count.to_s.rjust(8)} #{file_name}"
   else
     puts "#{line_count.to_s.rjust(8)} #{word_count.to_s.rjust(8)} #{char_count.to_s.rjust(8)} #{file_name}"
   end
@@ -44,12 +51,16 @@ def process_files(file_names, options)
   end
 
   if file_names.size > 1
-    if options[:l] && !options[:w]
+    if options[:l] && !options[:w] && !options[:c]
       puts "#{total_lines.to_s.rjust(8)} total"
-    elsif options[:w] && !options[:l]
-      puts "#{total_words.to_s.rjust(8)} total"
-    elsif options[:l] && options[:w]
+    elsif options[:l] && options[:w] && !options[:c]
       puts "#{total_lines.to_s.rjust(8)} #{total_words.to_s.rjust(8)} total"
+    elsif options[:l] && !options[:w] && options[:c]
+      putus "#{total_lines.to_s.rjust(8)} #{total_chars.to_s.rjust(8)} total"
+    elsif !options[:l] && options[:w] && options[:c]
+      puts "#{total_words.to_s.rjust(8)} #{total_chars.to_s.rjust(8)} total"
+    elsif !options[:l] && !options[:w] && options[:c]
+      puts "#{total_chars.to_s.rjust(8)} total"
     else
       puts "#{total_lines.to_s.rjust(8)} #{total_words.to_s.rjust(8)} #{total_chars.to_s.rjust(8)} total"
     end
