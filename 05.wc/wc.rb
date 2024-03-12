@@ -10,7 +10,7 @@ OptionParser.new do |opts|
   opts.on('-c') { |v| options[:c] = v }
 end.parse!
 
-def print_wc(content, options, label = '')
+def print_wc(content, options, file_name = nil)
   line_count = content.lines.size
   word_count = content.split(/\s+/).size
   char_count = content.bytesize
@@ -19,7 +19,7 @@ def print_wc(content, options, label = '')
   output += line_count.to_s.rjust(8) if options[:l] || options.empty?
   output += word_count.to_s.rjust(8) if options[:w] || options.empty?
   output += char_count.to_s.rjust(8) if options[:c] || options.empty?
-  puts "#{output} #{label}"
+  puts "#{output} #{file_name}"
 
   [line_count, word_count, char_count]
 end
