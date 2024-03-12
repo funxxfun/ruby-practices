@@ -10,8 +10,7 @@ OptionParser.new do |opts|
   opts.on('-c') { |v| options[:c] = v }
 end.parse!
 
-def print_wc(file_name, options)
-  content = File.read(file_name)
+def print_wc(content, options, label = '')
   line_count = content.lines.size
   word_count = content.split(/\s+/).size
   char_count = content.bytesize
@@ -20,9 +19,14 @@ def print_wc(file_name, options)
   output += line_count.to_s.rjust(8) if options[:l] || options.empty?
   output += word_count.to_s.rjust(8) if options[:w] || options.empty?
   output += char_count.to_s.rjust(8) if options[:c] || options.empty?
-  puts "#{output} #{file_name}"
+  puts "#{output} #{label}"
 
   [line_count, word_count, char_count]
+end
+
+def process_stdin(options)
+  content = $stdin.read
+  print_wc(content, options)
 end
 
 def process_files(file_names, options)
@@ -30,17 +34,22 @@ def process_files(file_names, options)
   total_words = 0
   total_chars = 0
 
-  file_names.each do |file_name|
-    if File.exist?(file_name)
-      counts = print_wc(file_name, options)
-      total_lines += counts[0]
-      total_words += counts[1]
-      total_chars += counts[2]
-    else
-      puts "wc: #{file_name}: open: No such file or directory"
+  if file_names.empty?
+    process_stdin(options)
+  else
+    file_names.each do |file_name|
+      if File.exist?(file_name)
+        content = File.read(file_name)
+        counts = print_wc(content, options, file_name)
+        total_lines += counts[0]
+        total_words += counts[1]
+        total_chars += counts[2]
+      else
+        puts "wc: #{file_name}: open: No such file or directory"
+      end
     end
+    print_total(total_lines, total_words, total_chars, options) if file_names.size > 1
   end
-  print_total(total_lines, total_words, total_chars, options) if file_names.size > 1
 end
 
 def print_total(total_lines, total_words, total_chars, options)
@@ -52,9 +61,4 @@ def print_total(total_lines, total_words, total_chars, options)
 end
 
 file_names = ARGV
-
-if file_names.empty?
-  puts 'wc: open: No such file or directory'
-else
-  process_files(file_names, options)
-end
+process_files(file_names, options)
