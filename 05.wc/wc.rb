@@ -40,10 +40,10 @@ def process_files(file_names, options)
     file_names.each do |file_name|
       if File.exist?(file_name)
         content = File.read(file_name)
-        counts = print_wc(content, options, file_name)
-        total_lines += counts[0]
-        total_words += counts[1]
-        total_chars += counts[2]
+        lines, words, chars = print_wc(content, options, file_name)
+        total_lines += lines
+        total_words += words
+        total_chars += chars
       else
         puts "wc: #{file_name}: open: No such file or directory"
       end
