@@ -10,15 +10,17 @@ OptionParser.new do |opts|
   opts.on('-c') { |v| options[:c] = v }
 end.parse!
 
+options[:l] = options[:w] = options[:c] = true if options.empty?
+
 def print_wc(content, options, file_name = nil)
   line_count = content.lines.size
   word_count = content.split(/\s+/).size
   char_count = content.bytesize
 
   output = ''
-  output += line_count.to_s.rjust(8) if options[:l] || options.empty?
-  output += word_count.to_s.rjust(8) if options[:w] || options.empty?
-  output += char_count.to_s.rjust(8) if options[:c] || options.empty?
+  output += line_count.to_s.rjust(8) if options[:l]
+  output += word_count.to_s.rjust(8) if options[:w]
+  output += char_count.to_s.rjust(8) if options[:c]
   puts "#{output} #{file_name}"
 
   [line_count, word_count, char_count]
@@ -54,9 +56,9 @@ end
 
 def print_total(total_lines, total_words, total_chars, options)
   output_total = ''
-  output_total += total_lines.to_s.rjust(8) if options[:l] || options.empty?
-  output_total += total_words.to_s.rjust(8) if options[:w] || options.empty?
-  output_total += total_chars.to_s.rjust(8) if options[:c] || options.empty?
+  output_total += total_lines.to_s.rjust(8) if options[:l]
+  output_total += total_words.to_s.rjust(8) if options[:w]
+  output_total += total_chars.to_s.rjust(8) if options[:c]
   puts "#{output_total} total"
 end
 
